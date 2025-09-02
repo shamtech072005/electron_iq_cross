@@ -1,0 +1,63 @@
+// lib/Screens/login_screen.dart
+
+import 'package:flutter/material.dart';
+import '../Services/auth_service.dart';
+import '../Widgets/science_background_painter.dart';
+
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final AuthService authService = AuthService();
+
+    return Scaffold(
+      body: Stack(
+        children: [
+          const ScienceBackground(),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Welcome to Electron IQ',
+                  style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Sign in to begin your chemistry adventure!',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white70,
+                  ),
+                ),
+                const SizedBox(height: 50),
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    await authService.signInWithGoogle();
+                    // The AuthGate will handle navigation automatically
+                  },
+                  icon: Image.asset('assets/google_logo.png', height: 24.0), // You need to add this image
+                  label: const Text('Sign in with Google'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.black87,
+                    backgroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    textStyle: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

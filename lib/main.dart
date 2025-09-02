@@ -1,12 +1,19 @@
-// main.dart
+// lib/main.dart
 
+import 'package:electron_iq/AuthController/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'Screens/main_menu_screen.dart';
+import 'package:firebase_core/firebase_core.dart'; // Import Firebase Core 
+import 'firebase_options.dart';                  // Import the generated options
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
@@ -21,7 +28,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // --- Dark, futuristic, and professional theme with CORRECTED text colors ---
     final textTheme = Theme.of(context).textTheme;
 
     return MaterialApp(
@@ -30,15 +36,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.teal,
-        scaffoldBackgroundColor: const Color(0xFF0A192F), // Deep Navy Blue
-        // --- THIS IS THE FIX ---
+        scaffoldBackgroundColor: const Color(0xFF0A192F),
         textTheme: GoogleFonts.montserratTextTheme(textTheme).apply(
-          bodyColor: const Color(0xFFCCD6F6), // Light slate color for body text
-          displayColor: Colors.white, // White for headlines
+          bodyColor: const Color(0xFFCCD6F6),
+          displayColor: Colors.white,
         ),
         cardTheme: CardThemeData(
           elevation: 2,
-          color: const Color(0xFF112240), // Slightly lighter navy for cards
+          color: const Color(0xFF112240),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -66,7 +71,8 @@ class MyApp extends StatelessWidget {
           color: Colors.white70,
         ),
       ),
-      home: const MainMenuScreen(),
+      // Use the AuthGate as the starting point of the app
+      home: const AuthGate(),
     );
   }
 }
