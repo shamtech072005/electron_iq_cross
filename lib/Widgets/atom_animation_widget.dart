@@ -1,8 +1,7 @@
-// lib/atom_animation_widget.dart
+// lib/Widgets/atom_animation_widget.dart
 
 import 'dart:math';
 import 'package:flutter/material.dart';
-
 import '../Datas/periodic_table_data.dart';
 
 class AtomAnimationWidget extends StatefulWidget {
@@ -37,21 +36,30 @@ class _AtomAnimationWidgetState extends State<AtomAnimationWidget>
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1.0,
-      child: CustomPaint(
-        painter: AtomPainter(
-          animation: _controller,
-          element: widget.element,
-        ),
-        child: Center(
-          child: Text(
-            widget.element.symbol,
-            style: const TextStyle(
-              fontSize: 48,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+      // Use a LayoutBuilder to get the available space
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Calculate a font size relative to the widget's width
+
+          return CustomPaint(
+            painter: AtomPainter(
+              animation: _controller,
+              element: widget.element,
             ),
-          ),
-        ),
+            child: Center(
+              child: Text(
+                widget.element.symbol,
+                style: TextStyle(
+                  // Apply the responsive font size
+                  // .clamp sets a min and max size to prevent it from getting too small or too large
+                  fontSize: MediaQuery.of(context).size.width * 0.03,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

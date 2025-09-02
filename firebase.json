@@ -1,0 +1,45 @@
+{
+    "hosting": {
+        "public": "build/web",
+        "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ],
+        "rewrites": [
+            {
+                "source": "**",
+                "destination": "/index.html"
+            }
+        ]
+    },
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "electron-iq-cross",
+                    "appId": "1:118771867481:android:412173cf6c969e0de7f648",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "ios": {
+                "default": {
+                    "projectId": "electron-iq-cross",
+                    "appId": "1:118771867481:ios:e2f1f5660c00cf82e7f648",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "electron-iq-cross",
+                    "configurations": {
+                        "android": "1:118771867481:android:412173cf6c969e0de7f648",
+                        "ios": "1:118771867481:ios:e2f1f5660c00cf82e7f648",
+                        "web": "1:118771867481:web:c19f605a95e1a840e7f648"
+                    }
+                }
+            }
+        }
+    }
+}

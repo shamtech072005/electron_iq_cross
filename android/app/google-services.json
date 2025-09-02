@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "118771867481",
+    "project_id": "electron-iq-cross",
+    "storage_bucket": "electron-iq-cross.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:118771867481:android:412173cf6c969e0de7f648",
+        "android_client_info": {
+          "package_name": "com.example.electron_iq"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL_66ZKxE-Dy_M4_BNZLw4R0x0Km08QtQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
