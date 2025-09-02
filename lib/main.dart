@@ -1,20 +1,23 @@
-// lib/main.dart
+// main.dart
 
 import 'package:electron_iq/AuthController/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_core/firebase_core.dart'; // Import Firebase Core 
-import 'firebase_options.dart';                  // Import the generated options
+import 'package:firebase_core/firebase_core.dart'; // <-- 1. Import Firebase Core
+import 'firebase_options.dart'; // <-- 2. Import your Firebase configuration
+
 
 void main() async {
+  // Ensure that Flutter bindings are initialized
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase
+  // --- 4. Initialize Firebase BEFORE running the app ---
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // Set preferred orientations
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
@@ -31,7 +34,7 @@ class MyApp extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return MaterialApp(
-      title: 'Periodic Table',
+      title: 'Electron IQ',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
@@ -71,8 +74,10 @@ class MyApp extends StatelessWidget {
           color: Colors.white70,
         ),
       ),
-      // Use the AuthGate as the starting point of the app
+      // --- 5. Start with the AuthGate ---
+      // This will check the login status and show the correct screen.
       home: const AuthGate(),
     );
   }
 }
+
