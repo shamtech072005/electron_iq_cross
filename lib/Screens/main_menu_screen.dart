@@ -1,11 +1,13 @@
 // lib/Screens/main_menu_screen.dart
 
+import 'package:electron_iq/Widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
 import '../Widgets/science_background_painter.dart';
 import 'periodic_table_view.dart';
 import 'quiz_menu_screen.dart';
 import 'comparison_selection_screen.dart';
-import 'profile_screen.dart'; // <-- 1. Import the new profile screen
+// The profile screen import is no longer needed
+// import 'profile_screen.dart';
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
@@ -13,12 +15,10 @@ class MainMenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 2. Add a transparent AppBar to host the drawer button
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      // 3. Add the Drawer to the Scaffold
       drawer: const AppDrawer(),
       body: Stack(
         children: [
@@ -132,95 +132,6 @@ class MainMenuScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-// 4. A reusable Drawer widget for navigation
-class AppDrawer extends StatelessWidget {
-  const AppDrawer({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      backgroundColor: const Color(0xFF0A192F), // Match the dark theme background
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Color(0xFF112240), // Match the card color
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.tealAccent,
-                  child: Text(
-                    'U', // Placeholder for User Initial
-                    style: TextStyle(fontSize: 32, color: Color(0xFF0A192F), fontWeight: FontWeight.bold),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'User Name',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.person_outline_rounded, color: Colors.white70),
-            title: const Text('Profile'),
-            onTap: () {
-              Navigator.pop(context); // Close the drawer first
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ProfileScreen()),
-              );
-            },
-          ),
-          // You can add other drawer items like Settings, About, etc. here
-        ],
-      ),
-    );
-  }
-}
-
-// The PlaceholderScreen for the comparison tool can be kept or removed if not needed elsewhere.
-class PlaceholderScreen extends StatelessWidget {
-  final String title;
-  const PlaceholderScreen({super.key, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Stack(
-        children: [
-          const ScienceBackground(),
-          const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.construction_rounded, size: 60, color: Colors.white38),
-                SizedBox(height: 20),
-                Text(
-                  'Coming Soon!',
-                  style: TextStyle(fontSize: 24, color: Colors.white70),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

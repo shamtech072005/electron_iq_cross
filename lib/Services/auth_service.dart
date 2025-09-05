@@ -1,6 +1,7 @@
 // lib/Services/auth_service.dart
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -15,6 +16,7 @@ class AuthService {
     try {
       // Trigger the Google Sign-In flow
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
       if (googleUser == null) {
         // The user canceled the sign-in
         return null;
@@ -33,7 +35,7 @@ class AuthService {
       final UserCredential userCredential = await _auth.signInWithCredential(credential);
       return userCredential.user;
     } catch (e) {
-      print("Error during Google Sign-In: $e");
+      debugPrint("Error during Google Sign-In: $e");
       return null;
     }
   }
@@ -44,4 +46,3 @@ class AuthService {
     await _auth.signOut();
   }
 }
-

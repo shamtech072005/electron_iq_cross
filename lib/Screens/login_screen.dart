@@ -19,8 +19,9 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   'Welcome to Electron IQ',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.w900,
@@ -41,7 +42,9 @@ class LoginScreen extends StatelessWidget {
                     await authService.signInWithGoogle();
                     // The AuthGate will handle navigation automatically
                   },
-                  icon: Image.asset('assets/google_logo.png', height: 24.0), // You need to add this image
+                  // --- THIS IS THE CHANGE ---
+                  // Now points to your new 'g.png' file
+                  icon: Image.asset('assets/g.png', height: 24.0),
                   label: const Text('Sign in with Google'),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.black87,
@@ -61,3 +64,4 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
+
