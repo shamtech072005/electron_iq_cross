@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../Widgets/science_background_painter.dart';
 import '../../Features/Periodic Table/Screens/periodic_table_view.dart';
-import '../../Features/Quiz/Screens/quiz_menu_screen.dart';
-import '../../Features/Element Comparison/Screens/comparison_selection_screen.dart';
+import 'coming_soon_screen.dart'; // <-- 1. IMPORT THE NEW SCREEN
 
 class MainMenuScreen extends StatefulWidget {
   const MainMenuScreen({super.key});
@@ -19,8 +18,8 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   BannerAd? _bannerAd;
   bool _isAdLoaded = false;
   
-  // --- THIS IS THE FIX ---
-  final String _adUnitId = 'ca-app-pub-9525829938702716/4315094343';
+  // Using Google's official test Ad Unit ID for banners.
+  final String _adUnitId = 'ca-app-pub-3940256099942544/6300978111';
 
   @override
   void initState() {
@@ -100,6 +99,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                             );
                           },
                         ),
+                        // --- 2. UPDATE THE QUIZ MODE ONTAP ---
                         _buildMenuCard(
                           context: context,
                           icon: Icons.quiz_rounded,
@@ -108,10 +108,11 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const QuizMenuScreen()),
+                              MaterialPageRoute(builder: (context) => const ComingSoonScreen(featureName: 'Quiz Mode')),
                             );
                           },
                         ),
+                        // --- 3. UPDATE THE ELEMENT COMPARISON ONTAP ---
                         _buildMenuCard(
                           context: context,
                           icon: Icons.compare_arrows_rounded,
@@ -120,7 +121,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const ComparisonSelectionScreen()),
+                              MaterialPageRoute(builder: (context) => const ComingSoonScreen(featureName: 'Element Comparison')),
                             );
                           },
                         ),

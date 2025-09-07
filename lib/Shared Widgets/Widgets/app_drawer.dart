@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Auth/auth_service.dart';
-import '../Screens/premium_screen.dart';
 import '../Screens/avatar_selection_screen.dart';
 import '../Screens/about_us_screen.dart';
 
@@ -72,47 +71,52 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, // Distribute space
               children: [
-                InkWell(
-                  onTap: _changeAvatar,
-                  child: Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage(_avatarPath),
-                          ),
-                        ),
-                      ),
-                      const CircleAvatar(
-                        radius: 12,
-                        backgroundColor: Colors.tealAccent,
-                        child: Icon(Icons.edit, size: 14, color: Colors.black),
-                      ),
-                    ],
+                // --- THIS IS THE CHANGE ---
+                // Added the App Name at the top
+                const Text(
+                  'Electron IQ',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 10),
-                Text(displayName, style: const TextStyle(color: Colors.white, fontSize: 18)),
+                // User info at the bottom of the header
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: _changeAvatar,
+                      child: Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          Container(
+                            width: 60,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage(_avatarPath),
+                              ),
+                            ),
+                          ),
+                          const CircleAvatar(
+                            radius: 12,
+                            backgroundColor: Colors.tealAccent,
+                            child: Icon(Icons.edit, size: 14, color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(displayName, style: const TextStyle(color: Colors.white, fontSize: 18)),
+                  ],
+                ),
               ],
             ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.workspace_premium_rounded, color: Colors.tealAccent),
-            title: const Text('Go Premium'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const PremiumScreen()),
-              );
-            },
           ),
           ListTile(
             leading: const Icon(Icons.info_outline_rounded, color: Colors.white70),
@@ -139,4 +143,3 @@ class _AppDrawerState extends State<AppDrawer> {
     );
   }
 }
-
