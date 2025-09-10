@@ -1,7 +1,7 @@
 // main.dart
 
-import 'package:electron_iq/Auth/auth_gate.dart';
-import 'package:flutter/foundation.dart'; // <-- 1. IMPORT FOUNDATION
+import 'package:electron_iq/Shared%20Widgets/Screens/splash_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,7 +22,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // --- 2. THIS IS THE FIX ---
   // Only initialize Ads and Analytics for mobile platforms
   if (!kIsWeb) {
     // Initialize the Mobile Ads SDK and register your test device.
@@ -32,7 +31,6 @@ void main() async {
     );
     MobileAds.instance.updateRequestConfiguration(configuration);
   }
-  // --- END OF FIX ---
 
   // Set preferred orientations
   await SystemChrome.setPreferredOrientations([
@@ -91,7 +89,8 @@ class MyApp extends StatelessWidget {
           color: Colors.white70,
         ),
       ),
-      home: const AuthGate(),
+      // Set the splash screen as the home
+      home: const SplashScreen(),
       // Conditionally add the observer only for non-web platforms
       navigatorObservers: !kIsWeb
           ? [

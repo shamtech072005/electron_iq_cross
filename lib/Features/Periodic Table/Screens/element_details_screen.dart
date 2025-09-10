@@ -115,29 +115,27 @@ class ElementDetailsScreen extends StatelessWidget {
                 ),
               if (element.imagePath != null) const SizedBox(height: 16),
 
-              // --- THIS IS THE FIX: Using larger aspect ratios to make cards shorter ---
               _buildInfoCard(
                 title: 'Electronic Configuration (Bohr Model)',
                 child: AspectRatio(
-                  aspectRatio: 1.6, // Adjusted from 1.3
+                  aspectRatio: 1.6,
                   child: BohrModelWidget(element: element),
                 ),
               ),
               const SizedBox(height: 16),
 
+              // --- THIS IS THE CHANGE ---
+              // Removed the AspectRatio from around the SubshellConfigWidget
               _buildInfoCard(
                 title: 'Subshell Configuration',
-                child: AspectRatio(
-                  aspectRatio: 1.8, // Adjusted from 1.5
-                  child: SubshellConfigWidget(element: element),
-                ),
+                child: SubshellConfigWidget(element: element),
               ),
               const SizedBox(height: 16),
 
               _buildInfoCard(
                 title: 'Aufbau Principle Structure',
                 child: AspectRatio(
-                  aspectRatio: 1.4, // Adjusted from 1.2
+                  aspectRatio: 1.4,
                   child: AufbauDiagramWidget(element: element),
                 ),
               ),
@@ -147,7 +145,7 @@ class ElementDetailsScreen extends StatelessWidget {
                 title:
                     'Valence Electrons (${element.electronConfiguration.last})',
                 child: AspectRatio(
-                  aspectRatio: 2.2, // Adjusted from 2.0
+                  aspectRatio: 2.2,
                   child: ValenceAtomAnimationWidget(element: element),
                 ),
               ),

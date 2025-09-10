@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "electron-iq-cross"
+  },
+  "targets": {
+    "electron-iq-cross": {
+      "hosting": {
+        "privacy": [
+          "electron-iq-privacy"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

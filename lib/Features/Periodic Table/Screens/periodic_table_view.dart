@@ -40,7 +40,7 @@ class _PeriodicTableViewState extends State<PeriodicTableView> {
 
   // For testing, it's recommended to use 'ca-app-pub-3940256099942544/6300978111'
 
-  final String _adUnitId = 'ca-app-pub-3940256099942544/6300978111';
+  final String _adUnitId = 'ca-app-pub-9525829938702716/4315094343';
 
   @override
   void initState() {

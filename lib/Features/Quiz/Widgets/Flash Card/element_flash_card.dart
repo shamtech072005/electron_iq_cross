@@ -132,7 +132,6 @@ class HexagonPainter extends CustomPainter {
     return path;
   }
 
-  @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 
   @override

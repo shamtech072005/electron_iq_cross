@@ -19,7 +19,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   bool _isAdLoaded = false;
   
   // Using Google's official test Ad Unit ID for banners.
-  final String _adUnitId = 'ca-app-pub-3940256099942544/6300978111';
+  final String _adUnitId = 'ca-app-pub-9525829938702716/4315094343';
 
   @override
   void initState() {

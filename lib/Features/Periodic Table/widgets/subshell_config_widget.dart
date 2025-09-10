@@ -40,22 +40,19 @@ class _SubshellConfigWidgetState extends State<SubshellConfigWidget> {
 
   @override
   void dispose() {
-    _autoNavTimer?.cancel(); // Important: cancel timer to prevent memory leaks
+    _autoNavTimer?.cancel();
     super.dispose();
   }
 
   void _startAutoNavigation() {
-    // Ensure we don't have multiple timers running
     _autoNavTimer?.cancel();
     _autoNavTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       if (!_isAutoNavigating) {
-        timer.cancel(); // Stop if auto-navigation is disabled
+        timer.cancel();
         return;
       }
-      // mounted check is a good practice for async operations in State
       if (mounted) {
         setState(() {
-          // Cycle through the available principal shells
           _selectedPrincipalShell = (_selectedPrincipalShell % widget.element.period) + 1;
         });
       }
@@ -85,7 +82,6 @@ class _SubshellConfigWidgetState extends State<SubshellConfigWidget> {
       parsedSubshells.add(Subshell('$orbital', electronsInOrbital, principal));
       electrons -= electronsInOrbital;
     }
-    // No need for setState here as it's called during initState
     _subshells = parsedSubshells;
   }
 
@@ -97,11 +93,20 @@ class _SubshellConfigWidgetState extends State<SubshellConfigWidget> {
 
     return Column(
       children: [
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        // --- THIS IS THE CHANGE ---
+        // Give the container a minimum height and use a Wrap layout
+        Container(
+          constraints: const BoxConstraints(minHeight: 140), // Ensures it has enough space
+          child: Wrap(
+            alignment: WrapAlignment.spaceEvenly,
+            runAlignment: WrapAlignment.center,
+            spacing: 8.0,
+            runSpacing: 16.0,
             children: currentSubshells.map((subshell) {
-              return Expanded(
+              // Give each item a fixed size to ensure consistency
+              return SizedBox(
+                width: 100,
+                height: 120,
                 child: SubshellAtomView(
                   key: ValueKey(subshell.name),
                   subshell: subshell,
@@ -127,7 +132,6 @@ class _SubshellConfigWidgetState extends State<SubshellConfigWidget> {
                   isSelected ? Theme.of(context).primaryColor : Colors.grey[800],
               labelStyle: const TextStyle(color: Colors.white),
               onPressed: () {
-                // On user interaction, stop the auto-navigation
                 _stopAutoNavigation();
                 setState(() {
                   _selectedPrincipalShell = shellNumber;
