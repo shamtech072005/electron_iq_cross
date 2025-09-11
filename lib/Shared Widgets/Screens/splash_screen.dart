@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:electron_iq/Auth/auth_gate.dart';
+import 'package:electron_iq/Core/Services/NetworkService.dart';
 import 'package:electron_iq/Core/Services/version_control_service.dart';
 import 'package:electron_iq/Core/utils/constant.dart';
 import 'package:electron_iq/Shared%20Widgets/Screens/Status/no_network_screen.dart';
@@ -35,9 +36,10 @@ class _SplashScreenState extends State<SplashScreen> {
     });
     await Future.delayed(const Duration(milliseconds: 500)); // Visual delay
 
-    final connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) {
-      print("no Network");
+    final networkService = NetworkService();
+    print(await networkService.isNetworkConnected() == false);
+    if (await networkService.isNetworkConnected() == false) {
+      print("connected");
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const NoNetworkScreen()),
       );
