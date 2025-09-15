@@ -1,7 +1,7 @@
 // lib/Features/Quiz/Flash card/flash_card_quiz_screen.dart
-import 'package:electron_iq/Features/Quiz/Screens/quiz_results_screen.dart';
-import 'package:electron_iq/Features/Quiz/Widgets/Flash%20Card/element_flash_card.dart';
-import 'package:electron_iq/Features/Quiz/Widgets/Flash%20Card/sparkle_animation.dart';
+import 'package:electron_iq/Features/Games/Screens/quiz_results_screen.dart';
+import 'package:electron_iq/Features/Games/Widgets/Flash%20Card/element_flash_card.dart';
+import 'package:electron_iq/Features/Games/Widgets/Flash%20Card/sparkle_animation.dart';
 import 'package:flutter/material.dart';
 import '../../../../Datas/periodic_table_data.dart';
 import '../../../../Datas/quiz_data.dart';

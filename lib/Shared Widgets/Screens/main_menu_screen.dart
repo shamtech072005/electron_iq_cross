@@ -1,5 +1,7 @@
 // lib/Shared Widgets/Screens/main_menu_screen.dart
 
+import 'package:electron_iq/Features/Element%20Comparison/Screens/comparison_selection_screen.dart';
+import 'package:electron_iq/Features/Games/Screens/quiz_menu_screen.dart';
 import 'package:electron_iq/Shared%20Widgets/Widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -102,13 +104,13 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                         // --- 2. UPDATE THE QUIZ MODE ONTAP ---
                         _buildMenuCard(
                           context: context,
-                          icon: Icons.quiz_rounded,
-                          title: 'Quiz Mode',
-                          subtitle: 'Test your chemistry knowledge',
+                          icon: Icons.games_outlined,
+                          title: 'Play And Learn',
+                          subtitle: 'Test your chemistry knowledge by playing games',
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const ComingSoonScreen(featureName: 'Quiz Mode')),
+                              MaterialPageRoute(builder: (context) => const QuizMenuScreen()),
                             );
                           },
                         ),
@@ -121,7 +123,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const ComingSoonScreen(featureName: 'Element Comparison')),
+                              MaterialPageRoute(builder: (context) => const ComparisonSelectionScreen()),
                             );
                           },
                         ),

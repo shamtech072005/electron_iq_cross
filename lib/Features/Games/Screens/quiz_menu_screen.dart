@@ -1,7 +1,7 @@
 // lib/Features/Quiz/Screens/quiz_menu_screen.dart
 
-import 'package:electron_iq/Features/Quiz/Flash%20card/flash_card_quiz_screen.dart';
-import 'package:electron_iq/Features/Quiz/Mcq/mcq_quiz_screen.dart';
+import 'package:electron_iq/Features/Games/Flash%20card/flash_card_quiz_screen.dart';
+import 'package:electron_iq/Features/Games/Mcq/mcq_quiz_screen.dart';
 import 'package:flutter/material.dart';
 import '../../../Datas/quiz_data.dart';
 import '../../../Shared Widgets/Widgets/bouncing_button.dart';
@@ -24,7 +24,7 @@ class _QuizMenuScreenState extends State<QuizMenuScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Quiz Mode'),
+        title: const Text('Select Game Mode'),
         backgroundColor: const Color(0xFF112240),
       ),
       body: Stack(

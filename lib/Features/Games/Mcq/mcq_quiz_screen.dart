@@ -1,7 +1,7 @@
 // lib/Features/Quiz/Screens/mcq/mcq_quiz_screen.dart
 
 import 'dart:async';
-import 'package:electron_iq/Features/Quiz/Screens/quiz_results_screen.dart';
+import 'package:electron_iq/Features/Games/Screens/quiz_results_screen.dart';
 import 'package:flutter/material.dart';
 import '../../../../Datas/quiz_data.dart';
 import '../../../../Shared Widgets/Widgets/bouncing_button.dart';
