@@ -19,7 +19,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.electron_iq"
+    namespace = "com.electroniq.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -34,7 +34,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.electron_iq"
+        applicationId = "com.electroniq.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 23
@@ -69,16 +69,21 @@ android {
         }
     }
 
+    packagingOptions {
+        resources {
+            excludes += setOf(
+                "META-INF/*.version",
+                "META-INF/androidx.*",
+                "META-INF/proguard/*"
+            )
+        }
+    }
+
     buildTypes {
         getByName("release") {
-            // Only apply signing config if keystore file exists
-            if (keystorePropertiesFile.exists()) {
-                signingConfig = signingConfigs.getByName("release")
-            }
-            // For Flutter apps, it's generally recommended to keep minification disabled
-            // to avoid potential issues with reflection and dynamic code
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
-            isShrinkResources = false // This must be false when minification is disabled
+            isShrinkResources = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }

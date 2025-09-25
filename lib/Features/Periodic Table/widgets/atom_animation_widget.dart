@@ -35,11 +35,13 @@ class _AtomAnimationWidgetState extends State<AtomAnimationWidget>
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1.0,
+      aspectRatio: 1,
       // Use a LayoutBuilder to get the available space
       child: LayoutBuilder(
         builder: (context, constraints) {
-          // Calculate a font size relative to the widget's width
+          // --- THIS IS THE FIX ---
+          // Calculate a font size relative to the widget's available space, not the whole screen.
+          final double responsiveFontSize = min(constraints.maxWidth, constraints.maxHeight) * 0.08;
 
           return CustomPaint(
             painter: AtomPainter(
@@ -50,9 +52,7 @@ class _AtomAnimationWidgetState extends State<AtomAnimationWidget>
               child: Text(
                 widget.element.symbol,
                 style: TextStyle(
-                  // Apply the responsive font size
-                  // .clamp sets a min and max size to prevent it from getting too small or too large
-                  fontSize: MediaQuery.of(context).size.width * 0.03,
+                  fontSize: responsiveFontSize,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),

@@ -102,16 +102,17 @@ class BohrModelPainter extends CustomPainter {
         canvas.drawCircle(electronPosition, 4.0, electronPaint);
       }
 
-      // --- Draw Shell Labels (K, L, M...) with better spacing ---
+      // --- THIS IS THE FIX ---
+      // Draw Shell Labels (K, L, M...) with inverted arrows
       if (i < shellNames.length) {
-        // Distribute arrows evenly in a 270-degree arc for better spacing
+        // Distribute labels evenly in a 270-degree arc for better spacing
         final angle = (pi * 1.5 / (shells.length - 1)) * i + (pi * 0.75);
         final labelPosition = center + Offset(cos(angle) * (maxRadius + 30), sin(angle) * (maxRadius + 30));
         _paintText(canvas, shellNames[i], labelPosition);
 
-        // Arrow pointing from label towards the shell
-        final arrowStart = center + Offset(cos(angle) * (maxRadius + 10), sin(angle) * (maxRadius + 10));
-        final arrowEnd = center + Offset(cos(angle) * (shellRadius + 5), sin(angle) * (shellRadius + 5));
+        // Arrow pointing from the shell towards the label
+        final arrowStart = center + Offset(cos(angle) * (shellRadius + 5), sin(angle) * (shellRadius + 5));
+        final arrowEnd = center + Offset(cos(angle) * (maxRadius + 10), sin(angle) * (maxRadius + 10));
         _drawArrow(canvas, arrowPaint, arrowStart, arrowEnd, size: 6);
       }
     }

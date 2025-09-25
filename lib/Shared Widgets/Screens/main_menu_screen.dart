@@ -1,7 +1,4 @@
 // lib/Shared Widgets/Screens/main_menu_screen.dart
-
-import 'package:electron_iq/Features/Element%20Comparison/Screens/comparison_selection_screen.dart';
-import 'package:electron_iq/Features/Games/Screens/quiz_menu_screen.dart';
 import 'package:electron_iq/Shared%20Widgets/Widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -70,64 +67,68 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                 const ScienceBackground(),
                 Center(
                   child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Electron IQ',
-                          style: TextStyle(
-                            fontSize: 62,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 600),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Electron IQ',
+                            style: TextStyle(
+                              fontSize: 62,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                        const Text(
-                          'Your Interactive Chemistry Guide',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white70,
+                          const Text(
+                            'Your Interactive Chemistry Guide',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white70,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 60),
-                        _buildMenuCard(
-                          context: context,
-                          icon: Icons.table_chart_rounded,
-                          title: 'Periodic Table',
-                          subtitle: 'Explore all 118 elements',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const PeriodicTableView()),
-                            );
-                          },
-                        ),
-                        // --- 2. UPDATE THE QUIZ MODE ONTAP ---
-                        _buildMenuCard(
-                          context: context,
-                          icon: Icons.games_outlined,
-                          title: 'Play And Learn',
-                          subtitle: 'Test your chemistry knowledge by playing games',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const QuizMenuScreen()),
-                            );
-                          },
-                        ),
-                        // --- 3. UPDATE THE ELEMENT COMPARISON ONTAP ---
-                        _buildMenuCard(
-                          context: context,
-                          icon: Icons.compare_arrows_rounded,
-                          title: 'Element Comparison Tool',
-                          subtitle: 'Compare properties side-by-side',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const ComparisonSelectionScreen()),
-                            );
-                          },
-                        ),
-                      ],
+                          const SizedBox(height: 60),
+                          _buildMenuCard(
+                            context: context,
+                            icon: Icons.table_chart_rounded,
+                            title: 'Periodic Table',
+                            subtitle: 'Explore all 118 elements',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const PeriodicTableView()),
+                              );
+                            },
+                          ),
+                          // --- 2. UPDATE THE QUIZ MODE ONTAP ---
+                          _buildMenuCard(
+                            context: context,
+                            icon: Icons.games_outlined,
+                            title: 'Play And Learn',
+                            subtitle: 'Test your chemistry knowledge by playing games',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ComingSoonScreen(featureName: 'Play And Learn')),
+                              );
+                            },
+                          ),
+                          // --- 3. UPDATE THE ELEMENT COMPARISON ONTAP ---
+                          _buildMenuCard(
+                            context: context,
+                            icon: Icons.compare_arrows_rounded,
+                            title: 'Element Comparison Tool',
+                            subtitle: 'Compare properties side-by-side',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ComingSoonScreen(featureName: 'Element Comparison Tool')),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -193,4 +194,3 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     );
   }
 }
-

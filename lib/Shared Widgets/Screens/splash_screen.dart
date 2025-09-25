@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:electron_iq/Auth/auth_gate.dart';
 import 'package:electron_iq/Core/Services/NetworkService.dart';
 import 'package:electron_iq/Core/Services/version_control_service.dart';
@@ -10,7 +9,6 @@ import 'package:electron_iq/Shared%20Widgets/Widgets/science_background_painter.
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -18,72 +16,94 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
   String _loadingMessage = 'Initializing...';
-  double _progress = 0.0;
 
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3), // Total animation duration
+    );
+
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller)
+      ..addListener(() {
+        setState(() {}); // Redraw the widget on each animation frame
+      });
+
     _initializeApp();
   }
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   Future<void> _initializeApp() async {
-    // 1. Check network connectivity
+    // Start the smooth animation
+    _controller.forward();
+
+    // Perform all initialization tasks concurrently
+    await Future.wait([
+      _checkNetwork(),
+      _checkVersion(),
+      Future.delayed(const Duration(seconds: 1)), // Minimum splash time
+    ]);
+
+    // Navigate after all tasks are done and animation is near completion
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const AuthGate()),
+          );
+        }
+      }
+    });
+  }
+
+  Future<void> _checkNetwork() async {
     setState(() {
       _loadingMessage = 'Checking network connection...';
-      _progress = 0.25;
     });
-    await Future.delayed(const Duration(milliseconds: 500)); // Visual delay
-
     final networkService = NetworkService();
-    print(await networkService.isNetworkConnected() == false);
-    if (await networkService.isNetworkConnected() == false) {
-      print("connected");
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const NoNetworkScreen()),
-      );
-      return;
+    if (!await networkService.isNetworkConnected()) {
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const NoNetworkScreen()),
+        );
+      }
     }
+  }
 
-    // 2. Check for app updates
+  Future<void> _checkVersion() async {
     setState(() {
       _loadingMessage = 'Verifying app version...';
-      _progress = 0.5;
     });
-    await Future.delayed(const Duration(milliseconds: 500)); // Visual delay
-    
     final versionService = VersionControlService(
       minimumRequiredVersion: Constant.minRequiredVersion,
       apiEndpoint: Constant.versionApiEndpoint,
     );
-
     await versionService.initialize();
-print(versionService.getCurrentVersion());
-print("new version ${versionService.getNewVersion()}");
-print("update available  ${versionService.isUpdateAvailable()}");
-    if (versionService.isUpdateAvailable()) {
-      print("new version ${versionService.getNewVersion()}");
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) =>
-              UpdateAppScreen(newVersion:versionService.getNewVersion() ?? ''),
-        ),
-      );
-      return;
-    }
 
-    // 3. Navigate to the app
+    if (versionService.isUpdateAvailable()) {
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) =>
+                UpdateAppScreen(newVersion: versionService.getNewVersion() ?? ''),
+          ),
+        );
+      }
+    }
     setState(() {
       _loadingMessage = 'Loading...';
-      _progress = 1.0;
     });
-
-    await Future.delayed(const Duration(seconds: 1)); // Simulate loading
-
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const AuthGate()),
-    );
   }
 
   @override
@@ -96,8 +116,7 @@ print("update available  ${versionService.isUpdateAvailable()}");
             child: CircularPercentIndicator(
               radius: 120.0,
               lineWidth: 13.0,
-              animation: true,
-              percent: _progress,
+              percent: _animation.value, // Driven by the animation controller
               center: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -111,7 +130,7 @@ print("update available  ${versionService.isUpdateAvailable()}");
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    '${(_progress * 100).toInt()}%',
+                    '${(_animation.value * 100).toInt()}%',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20.0,
@@ -139,4 +158,3 @@ print("update available  ${versionService.isUpdateAvailable()}");
     );
   }
 }
-

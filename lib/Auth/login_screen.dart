@@ -31,89 +31,97 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           const ScienceBackground(),
           Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Welcome to Electron IQ',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Sign in to begin your chemistry adventure!',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white70,
-                  ),
-                ),
-                const SizedBox(height: 50),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Checkbox(
-                        value: _privacyPolicyAccepted,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _privacyPolicyAccepted = value ?? false;
-                          });
-                        },
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 500),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Welcome to Electron IQ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
                       ),
-                      Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            text: 'I agree to the ',
-                            style: const TextStyle(color: Colors.white70),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: 'Privacy Policy',
-                                style: const TextStyle(
-                                  color: Colors.tealAccent,
-                                  decoration: TextDecoration.underline,
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Sign in to begin your chemistry adventure!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white70,
+                      ),
+                    ),
+                    const SizedBox(height: 50),
+                    
+                    // --- THIS IS THE FIX ---
+                    // Using a Row to place the checkbox to the left of the text.
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Checkbox(
+                          value: _privacyPolicyAccepted,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _privacyPolicyAccepted = value ?? false;
+                            });
+                          },
+                        ),
+                        Flexible(
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'I agree to the ',
+                              style: const TextStyle(
+                                  color: Colors.white70, fontSize: 16),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: 'Privacy Policy',
+                                  style: const TextStyle(
+                                    color: Colors.tealAccent,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      _launchURL(
+                                          'https://electron-iq-privacy-policy.firebaseapp.com/');
+                                    },
                                 ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    _launchURL(
-                                        'https://electron-iq-privacy-policy.firebaseapp.com/');
-                                  },
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton.icon(
-                  onPressed: _privacyPolicyAccepted
-                      ? () async {
-                          await authService.signInWithGoogle();
-                          // The AuthGate will handle navigation automatically
-                        }
-                      : null,
-                  // --- THIS IS THE CHANGE ---
-                  // Now points to your new 'g.png' file
-                  icon: Image.asset('assets/g.png', height: 24.0),
-                  label: const Text('Sign in with Google'),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black87,
-                    backgroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 15),
-                    textStyle: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      ],
                     ),
-                  ),
+                    const SizedBox(height: 30),
+                    ElevatedButton.icon(
+                      onPressed: _privacyPolicyAccepted
+                          ? () async {
+                              await authService.signInWithGoogle();
+                              // The AuthGate will handle navigation automatically
+                            }
+                          : null,
+                      icon: Image.asset('assets/g.png', height: 24.0),
+                      label: const Text('Sign in with Google'),
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.black87,
+                        backgroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 15),
+                        textStyle: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ],

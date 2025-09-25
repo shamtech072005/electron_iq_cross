@@ -45,7 +45,7 @@ class AboutUsScreen extends StatelessWidget {
       name: "Ms. Shruthi Vairavan",
       role: "Creative Spark",
       icon: Icons.lightbulb_rounded,
-      description: "11th Grade, Eastlake High School, WA, USA",
+      description: "12th grader from Lone Star High school, Texas",
       link: "https://www.linkedin.com/in/palani-vairavan-84b3921/"
     ),
     TeamMember(

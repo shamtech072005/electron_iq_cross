@@ -25,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -58,7 +55,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBL_66ZKxE-Dy_M4_BNZLw4R0x0Km08QtQ',
-    appId: '1:118771867481:android:412173cf6c969e0de7f648',
+    appId: '1:118771867481:android:9d8252f3e53000fee7f648',
     messagingSenderId: '118771867481',
     projectId: 'electron-iq-cross',
     storageBucket: 'electron-iq-cross.firebasestorage.app',
@@ -66,10 +63,24 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCRkAlEjZ7J_yhdRafXCQ-d6dcZHmHX-50',
+    appId: '1:118771867481:ios:a637f3b2d3f4c048e7f648',
+    messagingSenderId: '118771867481',
+    projectId: 'electron-iq-cross',
+    storageBucket: 'electron-iq-cross.firebasestorage.app',
+    androidClientId: '118771867481-9aocka78c66svi560ak8i0v4dpn034gr.apps.googleusercontent.com',
+    iosClientId: '118771867481-8u2kc4sslndqu81vqkusn35s9rpscrm9.apps.googleusercontent.com',
+    iosBundleId: 'com.sham.ElectronIQ',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyCRkAlEjZ7J_yhdRafXCQ-d6dcZHmHX-50',
     appId: '1:118771867481:ios:e2f1f5660c00cf82e7f648',
     messagingSenderId: '118771867481',
     projectId: 'electron-iq-cross',
     storageBucket: 'electron-iq-cross.firebasestorage.app',
+    androidClientId: '118771867481-9aocka78c66svi560ak8i0v4dpn034gr.apps.googleusercontent.com',
+    iosClientId: '118771867481-ai684bhn9h9un7kbrr25kl6tdcf7knqa.apps.googleusercontent.com',
     iosBundleId: 'com.example.electronIq',
   );
+
 }
