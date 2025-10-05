@@ -129,15 +129,6 @@ class _AppDrawerState extends State<AppDrawer> {
               );
             },
           ),
-          const Divider(color: Colors.white24),
-          ListTile(
-            leading: const Icon(Icons.logout_rounded, color: Colors.white70),
-            title: const Text('Logout'),
-            onTap: () {
-              Navigator.pop(context);
-              AuthService().signOut();
-            },
-          ),
         ],
       ),
     );

@@ -51,17 +51,17 @@ class ChemicalElement {
 }
 
 const Map<ElementCategory, Color> categoryColors = {
-  ElementCategory.alkaliMetal: Color(0xFFE57373), // Soft Red
-  ElementCategory.alkalineEarthMetal: Color(0xFFFFB74D), // Warm Amber
-  ElementCategory.lanthanide: Color(0xFFF48FB1), // Soft Pink
-  ElementCategory.actinide: Color(0xFFBA68C8), // Violet
-  ElementCategory.transitionMetal: Color(0xFF64B5F6), // Soft Blue
-  ElementCategory.postTransitionMetal: Color(0xFF90A4AE), // Cool Grey-Blue
-  ElementCategory.metalloid: Color(0xFF4DB6AC), // Teal
-  ElementCategory.polyatomicNonmetal: Color(0xFF81C784), // Soft Green
-  ElementCategory.diatomicNonmetal: Color(0xFFA5D6A7), // Light Mint
-  ElementCategory.nobleGas: Color(0xFF4FC3F7), // Sky Blue
-  ElementCategory.unknown: Color(0xFFB0BEC5), // Neutral Grey
+  ElementCategory.alkaliMetal: Color(0xFFF5973A),
+  ElementCategory.alkalineEarthMetal: Color(0xFFF16243),
+  ElementCategory.lanthanide: Color(0xFFE8788B),
+  ElementCategory.actinide: Color(0xFFD95098),
+  ElementCategory.transitionMetal: Color(0xFFD92E34),
+  ElementCategory.postTransitionMetal: Color(0xFF34859B),
+  ElementCategory.metalloid: Color(0xFF3E9C91),
+  ElementCategory.polyatomicNonmetal: Color(0xFF69B944),
+  ElementCategory.diatomicNonmetal: Color(0xFF69B944),
+  ElementCategory.nobleGas: Color(0xFF3EBCD3),
+  ElementCategory.unknown: Color(0xFFB0BEC5), // Kept original as it was not specified
 };
 
 

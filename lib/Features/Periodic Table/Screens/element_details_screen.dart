@@ -16,6 +16,47 @@ class ElementDetailsScreen extends StatelessWidget {
 
   const ElementDetailsScreen({super.key, required this.element});
 
+  // --- NEW: A centralized list of all the info cards ---
+  List<Widget> _buildInfoCardsList() {
+    const double cardHeight = 450; // Standard height for all cards
+
+    return [
+      _buildElementInfoCard(element: element), // This card has its own sizing
+      SizedBox(
+        height: cardHeight,
+        child: _buildPropertiesCard(),
+      ),
+      if (element.imagePath != null)
+        SizedBox(
+          height: cardHeight,
+          child: _buildVisualRepresentationCard(),
+        ),
+      SizedBox(
+        height: cardHeight,
+        child: _buildBohrModelCard(),
+      ),
+      SizedBox(
+        height: cardHeight,
+        child: _buildInfoCard(
+          title: 'Subshell Configuration',
+          child: SubshellConfigWidget(element: element),
+        ),
+      ),
+      SizedBox(
+        height: cardHeight,
+        child: _buildAufbauDiagramCard(),
+      ),
+      SizedBox(
+        height: cardHeight,
+        child: _buildValenceElectronsCard(),
+      ),
+      SizedBox(
+        height: cardHeight,
+        child: _buildSummaryCard(),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +69,7 @@ class ElementDetailsScreen extends StatelessWidget {
           const ScienceBackground(),
           LayoutBuilder(
             builder: (context, constraints) {
-              if (kIsWeb && constraints.maxWidth > 1000) {
+              if (kIsWeb && constraints.maxWidth > 1200) {
                 return _buildWebLayout();
               }
               return OrientationBuilder(
@@ -48,145 +89,66 @@ class ElementDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildPortraitLayout() {
-    return ListView(
+    final cards = _buildInfoCardsList();
+    return ListView.separated(
       padding: const EdgeInsets.all(16.0),
-      children: [
-        _buildElementInfoCard(element: element),
-        const SizedBox(height: 16),
-        _buildInfoCard(
-          title: 'Atomic Model',
-          child: AtomAnimationWidget(element: element),
-        ),
-        if (element.imagePath != null) ...[
-          const SizedBox(height: 16),
-          _buildVisualRepresentationCard(),
-        ],
-        const SizedBox(height: 16),
-        _buildBohrModelCard(),
-        const SizedBox(height: 16),
-        _buildInfoCard(
-          title: 'Subshell Configuration',
-          child: SubshellConfigWidget(element: element),
-        ),
-        const SizedBox(height: 16),
-        _buildAufbauDiagramCard(),
-        const SizedBox(height: 16),
-        _buildValenceElectronsCard(),
-        const SizedBox(height: 16),
-        _buildSummaryCard(),
-        const SizedBox(height: 16),
-        _buildPropertiesCard(),
-      ],
+      itemCount: cards.length,
+      itemBuilder: (context, index) => cards[index],
+      separatorBuilder: (context, index) => const SizedBox(height: 16),
     );
   }
 
   Widget _buildLandscapeLayout() {
-    return SingleChildScrollView(
+    final cards = _buildInfoCardsList();
+    return GridView.builder(
       padding: const EdgeInsets.all(16.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                _buildElementInfoCard(element: element),
-                const SizedBox(height: 16),
-                _buildInfoCard(
-                  title: 'Atomic Model',
-                  child: SizedBox(
-                    height: 300,
-                    child: AtomAnimationWidget(element: element),
-                  ),
-                ),
-                if (element.imagePath != null) ...[
-                  const SizedBox(height: 16),
-                  _buildVisualRepresentationCard(),
-                ],
-                const SizedBox(height: 16),
-                _buildSummaryCard(),
-                const SizedBox(height: 16),
-                _buildPropertiesCard(),
-              ],
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              children: [
-                _buildBohrModelCard(),
-                const SizedBox(height: 16),
-                _buildInfoCard(
-                  title: 'Subshell Configuration',
-                  child: SubshellConfigWidget(element: element),
-                ),
-                const SizedBox(height: 16),
-                _buildAufbauDiagramCard(),
-                const SizedBox(height: 16),
-                _buildValenceElectronsCard(),
-                
-                
-              ],
-            ),
-          ),
-        ],
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
+        childAspectRatio: 0.8, // Adjust aspect ratio for better look
       ),
+      itemCount: cards.length,
+      itemBuilder: (context, index) => cards[index],
     );
   }
 
   Widget _buildWebLayout() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                _buildElementInfoCard(element: element),
-                const SizedBox(height: 16),
-                _buildInfoCard(
-                  title: 'Atomic Model',
-                  child: SizedBox(
-                    height: 300,
-                    child: AtomAnimationWidget(element: element),
-                  ),
-                ),
-                if (element.imagePath != null) ...[
-                  const SizedBox(height: 16),
-                  _buildVisualRepresentationCard(),
+    final allCards = _buildInfoCardsList();
+    final topCards = allCards.sublist(0, 2);
+    final remainingCards = allCards.sublist(2);
+
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.all(16.0),
+          sliver: SliverToBoxAdapter(
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(flex: 1, child: topCards[0]),
+                  const SizedBox(width: 16),
+                  Expanded(flex: 1, child: topCards[1]),
                 ],
-              ],
+              ),
             ),
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              children: [
-                _buildBohrModelCard(),
-                const SizedBox(height: 16),
-                _buildAufbauDiagramCard(),
-                const SizedBox(height: 16),
-                _buildSummaryCard(),
-              ],
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
+          sliver: SliverGrid.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              childAspectRatio: 0.9,
             ),
+            itemCount: remainingCards.length,
+            itemBuilder: (context, index) => remainingCards[index],
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              children: [
-                _buildValenceElectronsCard(),
-                const SizedBox(height: 16),
-                _buildInfoCard(
-                  title: 'Subshell Configuration',
-                  child: SubshellConfigWidget(element: element),
-                ),
-                const SizedBox(height: 16),
-                _buildPropertiesCard(),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -314,7 +276,7 @@ class ElementDetailsScreen extends StatelessWidget {
               ),
             ),
             const Divider(height: 20, color: Colors.white24),
-            child,
+            Expanded(child: child),
           ],
         ),
       ),
@@ -325,59 +287,43 @@ class ElementDetailsScreen extends StatelessWidget {
     return _buildInfoCard(
       title: 'Visual Representation',
       child: Center(
-        child: SizedBox(
-          width: 400,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxHeight: 350,
-                  maxWidth: 400,
-                ),
-                child: AspectRatio(
-                  aspectRatio: 1.0,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.asset(
-                      element.imagePath!,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Center(
-                          child: Icon(
-                            Icons.image_not_supported_rounded,
-                            size: 50,
-                            color: Colors.white24,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  element.imagePath!,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Center(
+                      child: Icon(
+                        Icons.image_not_supported_rounded,
+                        size: 50,
+                        color: Colors.white24,
+                      ),
+                    );
+                  },
                 ),
               ),
-              if (element.imageTitle != null) ...[
-                const SizedBox(height: 12),
-                Container(
-                  width: 400,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                  ),
-                  child: Text(
-                    element.imageTitle!,
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontStyle: FontStyle.italic,
-                      color: Colors.white70,
-                      fontSize: 13,
-                      height: 1.2,
-                    ),
-                  ),
+            ),
+            if (element.imageTitle != null) ...[
+              const SizedBox(height: 12),
+              Text(
+                element.imageTitle!,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontStyle: FontStyle.italic,
+                  color: Colors.white70,
+                  fontSize: 13,
+                  height: 1.2,
                 ),
-              ],
+              ),
             ],
-          ),
+          ],
         ),
       ),
     );
@@ -386,42 +332,35 @@ class ElementDetailsScreen extends StatelessWidget {
   Widget _buildBohrModelCard() {
     return _buildInfoCard(
       title: 'Electronic Configuration (Bohr Model)',
-      child: AspectRatio(
-        aspectRatio: 1.6,
-        child: BohrModelWidget(element: element),
-      ),
+      child: BohrModelWidget(element: element),
     );
   }
 
   Widget _buildAufbauDiagramCard() {
     return _buildInfoCard(
       title: 'Aufbau Principle Structure',
-      child: AspectRatio(
-        aspectRatio: 1.4,
-        child: AufbauDiagramWidget(element: element),
-      ),
+      child: AufbauDiagramWidget(element: element),
     );
   }
 
   Widget _buildValenceElectronsCard() {
     return _buildInfoCard(
       title: 'Valence Electrons (${element.electronConfiguration.last})',
-      child: AspectRatio(
-        aspectRatio: 2.2,
-        child: ValenceAtomAnimationWidget(element: element),
-      ),
+      child: ValenceAtomAnimationWidget(element: element),
     );
   }
 
   Widget _buildSummaryCard() {
     return _buildInfoCard(
       title: 'Summary',
-      child: Text(
-        element.summary,
-        style: const TextStyle(
-          fontSize: 16,
-          color: Colors.white70,
-          height: 1.5,
+      child: SingleChildScrollView(
+        child: Text(
+          element.summary,
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colors.white70,
+            height: 1.5,
+          ),
         ),
       ),
     );
@@ -430,8 +369,11 @@ class ElementDetailsScreen extends StatelessWidget {
   Widget _buildPropertiesCard() {
     return _buildInfoCard(
       title: 'Properties',
-      child: Column(
+      child: ListView(
         children: [
+          _buildPropertyRow('Element Name', element.name),
+          _buildPropertyRow('Symbol', element.symbol),
+          _buildPropertyRow('Atomic Number', element.atomicNumber.toString()),
           _buildPropertyRow(
             'Category',
             element.category.name.replaceAllMapped(
@@ -450,6 +392,8 @@ class ElementDetailsScreen extends StatelessWidget {
             _buildPropertyRow('Density', element.density!),
           _buildPropertyRow('Group', element.group.toString()),
           _buildPropertyRow('Period', element.period.toString()),
+          _buildPropertyRow(
+              'Electron Configuration', element.electronConfiguration.join(', ')),
         ],
       ),
     );
@@ -457,22 +401,27 @@ class ElementDetailsScreen extends StatelessWidget {
 
   Widget _buildPropertyRow(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
+            flex: 2,
             child: Text(
               label,
               style: const TextStyle(fontSize: 15, color: Colors.white),
             ),
           ),
-          Text(
-            value,
-            textAlign: TextAlign.end,
-            style: const TextStyle(
-              fontSize: 15,
-              color: Colors.white70,
-              fontWeight: FontWeight.w500,
+          Expanded(
+            flex: 3,
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: const TextStyle(
+                fontSize: 15,
+                color: Colors.white70,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],

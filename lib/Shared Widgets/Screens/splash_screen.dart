@@ -1,10 +1,5 @@
 import 'dart:async';
-import 'package:electron_iq/Auth/auth_gate.dart';
-import 'package:electron_iq/Core/Services/NetworkService.dart';
-import 'package:electron_iq/Core/Services/version_control_service.dart';
-import 'package:electron_iq/Core/utils/constant.dart';
-import 'package:electron_iq/Shared%20Widgets/Screens/Status/no_network_screen.dart';
-import 'package:electron_iq/Shared%20Widgets/Screens/Status/update_app_screen.dart';
+import 'package:electron_iq/Features/Periodic%20Table/Screens/periodic_table_view.dart';
 import 'package:electron_iq/Shared%20Widgets/Widgets/science_background_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -20,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  String _loadingMessage = 'Initializing...';
+  final String _loadingMessage = 'Initializing...';
 
   @override
   void initState() {
@@ -48,61 +43,18 @@ class _SplashScreenState extends State<SplashScreen>
     // Start the smooth animation
     _controller.forward();
 
-    // Perform all initialization tasks concurrently
-    await Future.wait([
-      _checkNetwork(),
-      _checkVersion(),
-      Future.delayed(const Duration(seconds: 1)), // Minimum splash time
-    ]);
+    // Minimum splash time
+    await Future.delayed(const Duration(seconds: 3));
 
     // Navigate after all tasks are done and animation is near completion
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         if (mounted) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const AuthGate()),
+            MaterialPageRoute(builder: (context) => const PeriodicTableView()),
           );
         }
       }
-    });
-  }
-
-  Future<void> _checkNetwork() async {
-    setState(() {
-      _loadingMessage = 'Checking network connection...';
-    });
-    final networkService = NetworkService();
-    if (!await networkService.isNetworkConnected()) {
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const NoNetworkScreen()),
-        );
-      }
-    }
-  }
-
-  Future<void> _checkVersion() async {
-    setState(() {
-      _loadingMessage = 'Verifying app version...';
-    });
-    final versionService = VersionControlService(
-      minimumRequiredVersion: Constant.minRequiredVersion,
-      apiEndpoint: Constant.versionApiEndpoint,
-    );
-    await versionService.initialize();
-
-    if (versionService.isUpdateAvailable()) {
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) =>
-                UpdateAppScreen(newVersion: versionService.getNewVersion() ?? ''),
-          ),
-        );
-      }
-    }
-    setState(() {
-      _loadingMessage = 'Loading...';
     });
   }
 

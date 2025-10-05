@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:electron_iq/Shared%20Widgets/Widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -166,7 +167,7 @@ class _PeriodicTableViewState extends State<PeriodicTableView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-
+      drawer: const AppDrawer(),
       // --- 5. MODIFY THE BODY TO A COLUMN LAYOUT ---
       body: Column(
         children: [

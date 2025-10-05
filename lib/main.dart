@@ -8,12 +8,9 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'firebase_options.dart';
 
-// Create a static instance for the Analytics Observer
-final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
 void main() async {
   // --- 2. WRAP in runZonedGuarded FOR GLOBAL ERROR HANDLING ---
@@ -94,7 +91,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(
           elevation: 0,
           centerTitle: true,
-          backgroundColor: const Color(0xFF0A192F),
+          backgroundColor: Color(0xFF0A192F),
           titleTextStyle: TextStyle(
             fontFamily: 'Montserrat',
             fontSize: 22,
@@ -107,12 +104,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: const SplashScreen(),
-      navigatorObservers: !kIsWeb
-          ? [
-              FirebaseAnalyticsObserver(analytics: analytics),
-            ]
-          : [],
+      navigatorObservers: const [],
     );
   }
 }
-
