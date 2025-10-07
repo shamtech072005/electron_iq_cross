@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Auth/auth_service.dart';
 import '../Screens/avatar_selection_screen.dart';
 import '../Screens/about_us_screen.dart';
+import '../Screens/feedback_screen.dart'; // <-- IMPORT THE NEW SCREEN
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
@@ -126,6 +127,18 @@ class _AppDrawerState extends State<AppDrawer> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const AboutUsScreen()),
+              );
+            },
+          ),
+          // --- ADD THIS LISTTILE FOR FEEDBACK ---
+          ListTile(
+            leading: const Icon(Icons.feedback_rounded, color: Colors.white70),
+            title: const Text('Feedback'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FeedbackScreen()),
               );
             },
           ),
