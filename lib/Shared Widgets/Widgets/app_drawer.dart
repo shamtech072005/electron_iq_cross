@@ -77,7 +77,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 // --- THIS IS THE CHANGE ---
                 // Added the App Name at the top
                 const Text(
-                  'Electron IQ',
+                  'Element Explorer',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,

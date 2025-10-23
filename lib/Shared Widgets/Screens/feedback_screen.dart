@@ -1,7 +1,8 @@
 // lib/Shared Widgets/Screens/feedback_screen.dart
 
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // <-- 1. IMPORT FIRESTORE
+import 'package:firebase_auth/firebase_auth.dart'; // <-- 2. IMPORT FIREBASE AUTH
 import '../Widgets/science_background_painter.dart';
 import '../Widgets/bouncing_button.dart';
 
@@ -18,39 +19,30 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   final TextEditingController _feedbackController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  // --- 3. UPDATED METHOD TO SEND FEEDBACK TO FIRESTORE ---
   void _sendFeedback() async {
     if (_formKey.currentState!.validate()) {
-      final Uri emailLaunchUri = Uri(
-        scheme: 'mailto',
-        path: 'info@arjavatech.com',
-        query: encodeQueryParameters(<String, String>{
-          'subject': 'Electron IQ Feedback - $_selectedCategory',
-          'body': '''
-Rating: $_rating/5 stars
+      try {
+        final user = FirebaseAuth.instance.currentUser;
+        await FirebaseFirestore.instance.collection('feedback').add({
+          'userId': user?.uid,
+          'userEmail': user?.email,
+          'rating': _rating,
+          'category': _selectedCategory,
+          'feedback': _feedbackController.text,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
 
-Category: $_selectedCategory
-
-Feedback:
-${_feedbackController.text}
-          ''',
-        }),
-      );
-
-      if (await canLaunchUrl(emailLaunchUri)) {
-        await launchUrl(emailLaunchUri);
-      } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not launch email app.')),
+          const SnackBar(content: Text('Thank you for your feedback!')),
+        );
+        Navigator.pop(context); // Go back after successful submission
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to submit feedback: $e')),
         );
       }
     }
-  }
-
-  String? encodeQueryParameters(Map<String, String> params) {
-    return params.entries
-        .map((e) =>
-            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-        .join('&');
   }
 
   @override
@@ -83,7 +75,7 @@ ${_feedbackController.text}
                     ),
                     const SizedBox(height: 16),
                     const Text(
-                      'Your feedback helps us improve Electron IQ.',
+                      'Your feedback helps us improve Element Explorer.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
