@@ -26,6 +26,10 @@ class ElementDetailsScreen extends StatelessWidget {
         height: cardHeight,
         child: _buildPropertiesCard(),
       ),
+      SizedBox(
+        height: cardHeight,
+        child: _buildUsesCard(),
+      ),
       if (element.imagePath != null)
         SizedBox(
           height: cardHeight,
@@ -394,6 +398,73 @@ class ElementDetailsScreen extends StatelessWidget {
           _buildPropertyRow('Period', element.period.toString()),
           _buildPropertyRow(
               'Electron Configuration', element.electronConfiguration.join(', ')),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUsesCard() {
+    String? imagePathToUse = element.realImagePath;
+    if (imagePathToUse == null || imagePathToUse.isEmpty) {
+      imagePathToUse = 'assets/Rimg/${element.symbol}_Rimg.png';
+    }
+
+    return _buildInfoCard(
+      title: 'Uses & Applications',
+      child: Column(
+        children: [
+          Expanded(
+            flex: 2,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                imagePathToUse,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  return Center(
+                    child: Icon(
+                      Icons.science_rounded,
+                      size: 50,
+                      color: categoryColors[element.category]?.withOpacity(0.5),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Expanded(
+            flex: 3,
+            child: ListView.builder(
+              itemCount: element.uses.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.check_circle,
+                        color: Colors.greenAccent,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          element.uses[index],
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
