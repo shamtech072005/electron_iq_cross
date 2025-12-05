@@ -1,11 +1,9 @@
 // lib/Screens/element_details_screen.dart
 
-import 'package:electron_iq/Features/Periodic%20Table/widgets/aufbau_diagram_widget.dart'
-    show AufbauDiagramWidget;
+import 'package:electron_iq/Features/Periodic%20Table/widgets/aufbau_diagram_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../../Datas/periodic_table_data.dart';
-import '../widgets/atom_animation_widget.dart';
 import '../widgets/bohr_model_widget.dart';
 import '../widgets/subshell_config_widget.dart' show SubshellConfigWidget;
 import '../widgets/valence_atom_animation_widget.dart';
@@ -16,7 +14,7 @@ class ElementDetailsScreen extends StatelessWidget {
 
   const ElementDetailsScreen({super.key, required this.element});
 
-  // --- NEW: A centralized list of all the info cards ---
+  // --- A centralized list of all the info cards ---
   List<Widget> _buildInfoCardsList() {
     const double cardHeight = 450; // Standard height for all cards
 
@@ -403,6 +401,7 @@ class ElementDetailsScreen extends StatelessWidget {
     );
   }
 
+  // --- WIDGET MODIFIED ---
   Widget _buildUsesCard() {
     String? imagePathToUse = element.realImagePath;
     if (imagePathToUse == null || imagePathToUse.isEmpty) {
@@ -415,21 +414,45 @@ class ElementDetailsScreen extends StatelessWidget {
         children: [
           Expanded(
             flex: 2,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                imagePathToUse,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) {
-                  return Center(
-                    child: Icon(
-                      Icons.science_rounded,
-                      size: 50,
-                      color: categoryColors[element.category]?.withOpacity(0.5),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.asset(
+                      imagePathToUse,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Center(
+                          child: Icon(
+                            Icons.science_rounded,
+                            size: 50,
+                            color: categoryColors[element.category]?.withOpacity(0.5),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
+                  ),
+                ),
+                // --- START CHANGE ---
+                // This now correctly uses the 'realImageCaption' field
+                if (element.realImageCaption != null) ...[
+                  const SizedBox(height: 12),
+                  Text(
+                    element.realImageCaption!,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontStyle: FontStyle.italic,
+                      color: Colors.white70,
+                      fontSize: 13,
+                      height: 1.2,
+                    ),
+                  ),
+                ],
+                // --- END CHANGE ---
+              ],
             ),
           ),
           const SizedBox(height: 16),
@@ -469,6 +492,7 @@ class ElementDetailsScreen extends StatelessWidget {
       ),
     );
   }
+  // --- END OF MODIFIED WIDGET ---
 
   Widget _buildPropertyRow(String label, String value) {
     return Padding(
